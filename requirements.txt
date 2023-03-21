@@ -4,3 +4,5 @@ oauth2client
 google-cloud-storage
 google-cloud-bigquery
 google-cloud-bigquery[pandas]
+matplotlib
+yagmail

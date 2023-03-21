@@ -15,3 +15,7 @@
 
 node_modules
 example.config.py
+
+README.md
+
+tests/
