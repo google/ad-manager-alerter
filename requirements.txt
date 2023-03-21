@@ -1,0 +1,6 @@
+functions-framework==3.*
+googleads
+oauth2client
+google-cloud-storage
+google-cloud-bigquery
+google-cloud-bigquery[pandas]
