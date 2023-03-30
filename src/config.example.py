@@ -23,7 +23,7 @@ SERVICE_ACCOUNT = "default"
 
 NETWORK_CODE = "[YOUR_NETWORK_CODE]"
 
-BUCKET = "[YOUR_GCS_BUCKET]"
+BUCKET = "[YOUR_GCS_BUCKET]" # Example: "bucket_name", don't include gs://
 REPORT_FILE = "report.csv.gz"
 COLUMNS_TO_REPORT = ["AD_SERVER_IMPRESSIONS"]
 DAYS_IN_REPORT = 60
