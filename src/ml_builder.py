@@ -53,7 +53,6 @@ def build_ml_model():
           FROM {DATASET}.{TABLE}
           """
   run_query_and_wait(query)
-  # Blocks until result is available will throw exception in case of error.
 
 
 def prepare_bq():
