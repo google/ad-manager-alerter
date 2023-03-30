@@ -18,7 +18,7 @@ import functions_framework
 import report_downloader
 
 @functions_framework.http
-def ad_manager_anomaly_detector(request):
+def ad_manager_alerter(request):
   """Handle HTTP request, query argument "method" determines what part of the
   code will execute. Possible values: download_report, prepare_bq,
   detect_anomalies"""
