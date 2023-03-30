@@ -10,7 +10,9 @@ This project is meant to serve as inspiration for how you can do anomaly detecti
     - [Create a Google Cloud Bucket](#create-a-google-cloud-bucket)
     - [Create a BigQuery dataset](#create-a-bigquery-dataset)
     - [Grant access to run Ad Manager Reports](#grant-access-to-run-ad-manager-reports)
-    - [Deploy as Cloud Function](#deploy-as-cloud-function)
+    - [Deploy to cloud](#deploy-to-cloud)
+      - [Enable services to deploy](#enable-services-to-deploy)
+      - [Deploy Cloud Function](#deploy-cloud-function)
     - [Deploy as Cloud Workflow](#deploy-as-cloud-workflow)
   - [Overview of modules](#overview-of-modules)
     - [Ad Manager report downloader](#ad-manager-report-downloader)
@@ -67,16 +69,38 @@ For this project to work it needs to first fetch reports from the Ad Manager API
 1. [Enable API access in Ad Manager](https://support.google.com/admanager/answer/3088588?hl=en)
 2. [Add the service account email to Ad Manager](https://support.google.com/admanager/answer/6078734?hl=en) with rights to run reports. (Eg. role "[Executive](https://support.google.com/admanager/answer/177403?hl=en)")
 
-### Deploy as Cloud Function
+### Deploy to cloud
+
+#### Enable services to deploy
+
+First time running this command you might be prompted to enable some APIs to be able to deploy.
+
+If you want to you can enable them with the following command:
+
+```bash
+gcloud services enable artifactregistry.googleapis.com cloudbuild.googleapis.com cloudfunctions.googleapis.com cloudscheduler.googleapis.com containerregistry.googleapis.com  logging.googleapis.com monitoring.googleapis.com pubsub.googleapis.com run.googleapis.com workflows.googleapis.com
+```
+
+#### Deploy Cloud Function
 
 ```bash
 gcloud functions deploy ad-manager-alerter \
  --source=src/ --trigger-http --gen2 --runtime=python311 \
- --region=us-central1 --entry-point=ad_manager_alerter
- --service-account=[YOUR_SERVICE_ACCOUNT]
+ --region=us-central1 --entry-point=ad_manager_alerter \
+ --memory=512M --timeout=3600 \
+ --service-account=[YOUR_SERVICE_ACCOUNT] \
+ --set-env-vars SENDGRID_API_KEY=[SENDGRID_API_KEY]
 ```
 
-First time running this command you might be prompted to enable some APIs to be able to deploy.
+When this command finishes you should see something like:
+
+```txt
+...
+  uri: https://your_cloud_function-abc123.run.app
+state: ACTIVE
+```
+
+Copy and save the "uri", you need this in the next stage.
 
 ### Deploy as Cloud Workflow
 
@@ -85,6 +109,15 @@ Copy the `workflow.example.yaml` to `workflow.yaml` and edit the cloud function 
 ```bash
 gcloud workflows deploy ad-manager-alert-workflow --source workflow.yaml
 ```
+
+Verify that it's working by running the workflow, this can be done in the terminal via:
+```bash
+gcloud workflows run ad-manager-alert-workflow
+```
+
+If it runs without issue now could be a good time to set it up to run on a schedule via Cloud Scheduler.
+
+If there are issues here, pause and fix them before continuing.
 
 ## Overview of modules
 

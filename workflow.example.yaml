@@ -13,9 +13,10 @@
 # limitations under the License.
 
 main:
-    arguments:
-        cloud_function_url: [YOUR_CLOUD_FUNCTION_URL]
     steps:
+    - init:
+      assign:
+        - cloud_function_url: [YOUR_CLOUD_FUNCTION_URL]
     - download_report:
         try:
             call: http.post

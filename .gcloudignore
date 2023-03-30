@@ -14,7 +14,7 @@
 .gitignore
 
 node_modules
-example.config.py
+src/example.config.py
 
 README.md
 
