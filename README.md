@@ -71,11 +71,11 @@ For this project to work it needs to first fetch reports from the Ad Manager API
 
 ### Deploy to cloud
 
-#### Enable services to deploy
+#### Enable services to deploy to functions / workflows
 
-First time running this command you might be prompted to enable some APIs to be able to deploy.
+First time running the commands below you might be prompted to enable some APIs to be able to deploy.
 
-If you want to you can enable them with the following command:
+If you want to you can enable them beforehand with the following command:
 
 ```bash
 gcloud services enable artifactregistry.googleapis.com cloudbuild.googleapis.com cloudfunctions.googleapis.com cloudscheduler.googleapis.com containerregistry.googleapis.com  logging.googleapis.com monitoring.googleapis.com pubsub.googleapis.com run.googleapis.com workflows.googleapis.com
