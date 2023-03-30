@@ -11,9 +11,10 @@ This project is meant to serve as inspiration for how you can do anomaly detecti
     - [Create a BigQuery dataset](#create-a-bigquery-dataset)
     - [Grant access to run Ad Manager Reports](#grant-access-to-run-ad-manager-reports)
     - [Deploy to cloud](#deploy-to-cloud)
-      - [Enable services to deploy](#enable-services-to-deploy)
+      - [Enable services to deploy to functions / workflows](#enable-services-to-deploy-to-functions--workflows)
       - [Deploy Cloud Function](#deploy-cloud-function)
-    - [Deploy as Cloud Workflow](#deploy-as-cloud-workflow)
+      - [Deploy as Cloud Workflow](#deploy-as-cloud-workflow)
+      - [Deploy to Cloud Scheduler](#deploy-to-cloud-scheduler)
   - [Overview of modules](#overview-of-modules)
     - [Ad Manager report downloader](#ad-manager-report-downloader)
     - [BigQuery import and model creation](#bigquery-import-and-model-creation)
@@ -30,16 +31,20 @@ Products needed:
 - Google Cloud Project with billing enabled (billing is required for cloud
   functions, check [https://cloud.google.com/free](https://cloud.google.com/free) for the current free tier limits)
 
-This setup assumes that you're using the default service account for the account
-in order to make it as easy as possible to install.
+For the setup instructions below we're using
+[Google Cloud CLI](https://cloud.google.com/sdk/docs/install-sdk) to run some
+commands for us, if you haven't installed and configured that yet - do it now.
 
-To get started, **copy** `src/config.example.py` to `src/config.py`
 
-   ```bash
-   cp src/config.example.py src/config.py
-   ```
+To get started, clone this repository and make a copy of the config file.
 
-We will edit this copy during the rest of the steps below.
+```bash
+git clone https://github.com/google/ad-manager-alerter.git
+cd ad-manager-alerter
+cp src/config.example.py src/config.py
+```
+
+We will edit `src/config.py` during the rest of the steps below.
 
 ### Create service account
 
@@ -102,9 +107,12 @@ state: ACTIVE
 
 Copy and save the "uri", you need this in the next stage.
 
-### Deploy as Cloud Workflow
+#### Deploy as Cloud Workflow
 
 Copy the `workflow.example.yaml` to `workflow.yaml` and edit the cloud function URL to match the URL you got from the previous step.
+
+*If you want to only run parts of this example library (eg. only export to GCS)
+modify this file and remove the steps you don't want to run.*
 
 ```bash
 gcloud workflows deploy ad-manager-alert-workflow --source workflow.yaml
@@ -118,6 +126,12 @@ gcloud workflows run ad-manager-alert-workflow
 If it runs without issue now could be a good time to set it up to run on a schedule via Cloud Scheduler.
 
 If there are issues here, pause and fix them before continuing.
+
+#### Deploy to Cloud Scheduler
+
+When you verified it's working you can
+[setup a new Cloud Scheduler](https://console.cloud.google.com/cloudscheduler/jobs/new)
+to run the workflow at an interval.
 
 ## Overview of modules
 
