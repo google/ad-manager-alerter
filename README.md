@@ -79,7 +79,8 @@ For this project to work it needs to first fetch reports from the Ad Manager API
 
 #### Making sure we can send emails
 
-This code example uses SendGrid to send emails.
+Making sure emails are sent and received correctly can be tricky, to make it easier this example uses SendGrid in order to send emails.
+
 If you don't have a SendGrid account you can create one throught the [SendGrid page on Cloud Marketplace](https://console.cloud.google.com/marketplace/details/sendgrid-app/sendgrid-email).
 
 Once your sendgrid account is created you can follow the steps to setup a send account and get your API KEY.
@@ -127,6 +128,7 @@ gcloud workflows deploy ad-manager-alert-workflow --source workflow.yaml
 ```
 
 Verify that it's working by running the workflow, this can be done in the terminal via:
+
 ```bash
 gcloud workflows run ad-manager-alert-workflow
 ```
