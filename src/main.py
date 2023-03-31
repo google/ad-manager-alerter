@@ -17,17 +17,22 @@ import ml_builder
 import functions_framework
 import report_downloader
 
+METHODS_MAP = {
+    "download_report": report_downloader.download_report,
+    "prepare_bq": ml_builder.prepare_bq,
+    "detect_anomalies": anomaly_detector.detect_and_notify,
+}
+
 @functions_framework.http
 def ad_manager_alerter(request):
   """Handle HTTP request, query argument "method" determines what part of the
   code will execute. Possible values: download_report, prepare_bq,
   detect_anomalies"""
   method = request.args["method"]
-  if "download_report" == method:
-    return report_downloader.download_report()
-  elif "prepare_bq" == method:
-    return ml_builder.prepare_bq()
-  elif "detect_anomalies" == method:
-    return anomaly_detector.detect_and_notify()
-  else:
+  if method is None:
+    raise RuntimeError("Method not provided, please provide?method=method_name")
+  
+  if method not in METHODS_MAP:
     raise RuntimeError("Method unknown, please provide?method=method_name")
+  
+  return METHODS_MAP[method]()
