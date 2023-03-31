@@ -22,7 +22,7 @@ from sendgrid.helpers.mail import Mail
 
 from google.cloud import bigquery
 
-from config import DATASET, ML_MODEL_NAME, DAYS_IN_CHART, COLUMN_TO_MONITOR, SENDER_ADDRESS, SENDGRID_API_KEY, ALERT_RECEIVERS, CONSECUTIVE_ANOMALIES_REQ
+from config import DATASET, ML_MODEL_NAME, DAYS_IN_CHART, COLUMN_TO_MONITOR, SENDER_ADDRESS, SENDGRID_API_KEY, ALERT_RECEIVERS, CONSECUTIVE_ANOMALIES_REQ, TIME_SERIES_ID_COL
 
 
 def save_alert_chart(data, title):
@@ -70,6 +70,7 @@ def get_anomaly_data():
   client = bigquery.Client()
   query = f"""SELECT
                 date_hour,
+                {TIME_SERIES_ID_COL},
                 {COLUMN_TO_MONITOR},
                 is_anomaly,
                 lower_bound,

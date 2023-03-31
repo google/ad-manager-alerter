@@ -18,7 +18,7 @@ The function prepare_bq is responsible for executing these two steps.
 """
 from google.cloud import bigquery
 
-from config import BUCKET, REPORT_FILE, DATASET, TABLE, ML_MODEL_NAME, COLUMN_TO_MONITOR
+from config import BUCKET, REPORT_FILE, DATASET, TABLE, ML_MODEL_NAME, COLUMN_TO_MONITOR, TIME_SERIES_ID_COL
 
 
 def run_query_and_wait(query):
@@ -45,6 +45,7 @@ def build_ml_model():
                   MODEL_TYPE='ARIMA_PLUS',
                   TIME_SERIES_TIMESTAMP_COL='date_hour',
                   TIME_SERIES_DATA_COL='{COLUMN_TO_MONITOR}',
+                  TIME_SERIES_ID_COL={TIME_SERIES_ID_COL}
                   HOLIDAY_REGION='US'
               ) AS
           SELECT

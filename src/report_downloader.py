@@ -25,7 +25,7 @@ from googleads import ad_manager
 from googleads import oauth2
 from googleads import errors
 from google.cloud import storage
-from config import SERVICE_ACCOUNT, NETWORK_CODE, BUCKET, REPORT_FILE, COLUMNS_TO_REPORT, DAYS_IN_REPORT
+from config import SERVICE_ACCOUNT, NETWORK_CODE, BUCKET, REPORT_FILE, COLUMNS_TO_REPORT, DAYS_IN_REPORT, DIMENSIONS_TO_REPORT
 
 APPLICATION_NAME = 'Anomaly detection'
 METADATA_URL = 'http://metadata.google.internal/computeMetadata/v1/'
@@ -60,7 +60,7 @@ def get_and_download_report(ad_manager_client):
   # Create report job.
   report_job = {
       'reportQuery': {
-          'dimensions': ['DATE', 'HOUR'],
+          'dimensions': DIMENSIONS_TO_REPORT,
           'statement': statement.ToStatement(),
           'columns': COLUMNS_TO_REPORT,
           'dateRangeType': 'CUSTOM_DATE',
