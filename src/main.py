@@ -31,8 +31,8 @@ def ad_manager_alerter(request):
   method = request.args["method"]
   if method is None:
     raise RuntimeError("Method not provided, please provide?method=method_name")
-  
+
   if method not in METHODS_MAP:
     raise RuntimeError("Method unknown, please provide?method=method_name")
-  
+
   return METHODS_MAP[method]()
