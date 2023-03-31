@@ -19,6 +19,8 @@ import os
 # settings
 
 # Step 1, download report to GCS
+
+# default = the service account running the cloud function
 SERVICE_ACCOUNT = "default"
 
 NETWORK_CODE = "[YOUR_NETWORK_CODE]"
@@ -44,8 +46,7 @@ DAYS_IN_CHART = 7
 # Config on many consecutive anomalies are required for alert to trigger
 CONSECUTIVE_ANOMALIES_REQ = 3
 
-SENDER_GMAIL_ADDRESS  = "...@gmail.com"
-# Recommended that you define the password as an environment variable
-SENDER_GMAIL_PASSWORD = os.environ["SENDER_GMAIL_PASSWORD"]
 
+SENDGRID_API_KEY = os.environ["SENDGRID_API_KEY"]
+SENDER_ADDRESS  = "sender@example.com"
 ALERT_RECEIVERS = ["receiver@example.com"]

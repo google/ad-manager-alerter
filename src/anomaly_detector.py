@@ -14,15 +14,18 @@
 """Running detect_and_notify() int his file detects anomalies in a BigQuery
 forecast model and triggers an alert"""
 
+import base64
+import io
 import matplotlib.pyplot as plt
-import yagmail
+from sendgrid import SendGridAPIClient, Attachment
+from sendgrid.helpers.mail import Mail
 
 from google.cloud import bigquery
 
-from config import DATASET, ML_MODEL_NAME, DAYS_IN_CHART, COLUMN_TO_MONITOR, SENDER_GMAIL_ADDRESS, SENDER_GMAIL_PASSWORD, ALERT_RECEIVERS, CONSECUTIVE_ANOMALIES_REQ
+from config import DATASET, ML_MODEL_NAME, DAYS_IN_CHART, COLUMN_TO_MONITOR, SENDER_ADDRESS, SENDGRID_API_KEY, ALERT_RECEIVERS, CONSECUTIVE_ANOMALIES_REQ
 
 
-def save_alert_chart(data, filename):
+def save_alert_chart(data, title):
   """Builds and saves a chart based on the anomaly data provided.
 
   Will use lower_bound and upper_bound in the data to visualize the confidence
@@ -30,6 +33,9 @@ def save_alert_chart(data, filename):
   actual data with red dots when the data is classified as "is_anomaly".
   """
   fig = plt.figure(figsize=(10, 4))
+  # Add title to chart
+  plt.title(title)
+  # Draw the confidence interval
   plt.fill_between(data["date_hour"], data["lower_bound"],
                     data["upper_bound"], color="#eef", edgecolor="#aac")
   # Plots the data for COLUMN_TO_MONITOR
@@ -41,11 +47,14 @@ def save_alert_chart(data, filename):
   plt.plot(anomalies["date_hour"],
             anomalies[COLUMN_TO_MONITOR], "ro", markersize=10)
 
-  # Formats dates nice
+  # Formats dates nicely
   fig.autofmt_xdate()
 
-  #Saves to file
-  plt.savefig(filename)
+  # Return as base64
+  bytes_io = io.BytesIO()
+  plt.savefig(bytes_io, format="png")
+  bytes_io.seek(0)
+  return base64.b64encode(bytes_io.read()).decode()
 
 
 def get_anomaly_data():
@@ -76,15 +85,28 @@ def get_anomaly_data():
 
 
 def notify(forecasting_data):
-  filename = "chart.png"
-  save_alert_chart(forecasting_data, filename)
-  yag = yagmail.SMTP(SENDER_GMAIL_ADDRESS, SENDER_GMAIL_PASSWORD)
-  contents = [
-    "<h1>Anomaly detected</h1>",
-    yagmail.inline(filename)
-  ]
-  subject = "Anomaly detected"
-  yag.send(ALERT_RECEIVERS, subject, contents)
+  alert_chart_b64 = save_alert_chart(forecasting_data, COLUMN_TO_MONITOR)
+
+  message = Mail(
+      from_email=SENDER_ADDRESS,
+      to_emails=ALERT_RECEIVERS,
+      subject=f"Anomaly detected on {COLUMN_TO_MONITOR}",
+      html_content=f"""
+      <p>
+        Anomalies were detected on {COLUMN_TO_MONITOR}
+      </p>
+      <img src="cid:alert_chart">
+      """
+      )
+  message.attachment = Attachment(
+    disposition="inline",
+    file_name="alert_chart.png",
+    file_type="image/png",
+    file_content=alert_chart_b64,
+    content_id="alert_chart"
+  )
+  sg = SendGridAPIClient(SENDGRID_API_KEY)
+  sg.send(message)
 
 
 def should_notify(forecasting_data, consecutive_anomalies_req):

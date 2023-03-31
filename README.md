@@ -11,6 +11,7 @@ This project is meant to serve as inspiration for how you can do anomaly detecti
     - [Create a BigQuery dataset](#create-a-bigquery-dataset)
     - [Grant access to run Ad Manager Reports](#grant-access-to-run-ad-manager-reports)
     - [Deploy to cloud](#deploy-to-cloud)
+      - [Making sure we can send emails](#making-sure-we-can-send-emails)
       - [Enable services to deploy to functions / workflows](#enable-services-to-deploy-to-functions--workflows)
       - [Deploy Cloud Function](#deploy-cloud-function)
       - [Deploy as Cloud Workflow](#deploy-as-cloud-workflow)
@@ -75,6 +76,13 @@ For this project to work it needs to first fetch reports from the Ad Manager API
 2. [Add the service account email to Ad Manager](https://support.google.com/admanager/answer/6078734?hl=en) with rights to run reports. (Eg. role "[Executive](https://support.google.com/admanager/answer/177403?hl=en)")
 
 ### Deploy to cloud
+
+#### Making sure we can send emails
+
+This code example uses SendGrid to send emails.
+If you don't have a SendGrid account you can create one throught the [SendGrid page on Cloud Marketplace](https://console.cloud.google.com/marketplace/details/sendgrid-app/sendgrid-email).
+
+Once your sendgrid account is created you can follow the steps to setup a send account and get your API KEY.
 
 #### Enable services to deploy to functions / workflows
 
