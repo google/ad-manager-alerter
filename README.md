@@ -11,6 +11,7 @@ This project is meant to serve as inspiration for how you can do anomaly detecti
     - [Create a BigQuery dataset](#create-a-bigquery-dataset)
     - [Grant access to run Ad Manager Reports](#grant-access-to-run-ad-manager-reports)
     - [Deploy to cloud](#deploy-to-cloud)
+      - [Making sure we can send emails](#making-sure-we-can-send-emails)
       - [Enable services to deploy to functions / workflows](#enable-services-to-deploy-to-functions--workflows)
       - [Deploy Cloud Function](#deploy-cloud-function)
       - [Deploy as Cloud Workflow](#deploy-as-cloud-workflow)
@@ -76,6 +77,14 @@ For this project to work it needs to first fetch reports from the Ad Manager API
 
 ### Deploy to cloud
 
+#### Making sure we can send emails
+
+Making sure emails are sent and received correctly can be tricky, to make it easier this example uses SendGrid in order to send emails.
+
+If you don't have a SendGrid account you can create one throught the [SendGrid page on Cloud Marketplace](https://console.cloud.google.com/marketplace/details/sendgrid-app/sendgrid-email).
+
+Once your sendgrid account is created you can follow the steps to setup a send account and get your API KEY.
+
 #### Enable services to deploy to functions / workflows
 
 First time running the commands below you might be prompted to enable some APIs to be able to deploy.
@@ -119,6 +128,7 @@ gcloud workflows deploy ad-manager-alert-workflow --source workflow.yaml
 ```
 
 Verify that it's working by running the workflow, this can be done in the terminal via:
+
 ```bash
 gcloud workflows run ad-manager-alert-workflow
 ```
