@@ -19,6 +19,7 @@ import report_downloader
 
 METHODS_MAP = {
     "download_report": report_downloader.download_report,
+    "download_all_saved_reports": report_downloader.download_all_saved_reports,
     "prepare_bq": ml_builder.prepare_bq,
     "detect_anomalies": anomaly_detector.detect_and_notify,
 }
