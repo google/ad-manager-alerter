@@ -17,6 +17,19 @@ main:
     - init:
       assign:
         - cloud_function_url: [YOUR_CLOUD_FUNCTION_URL]
+    # This step downloads all saved reports shared with the service account
+    - download_all_saved_reports:
+        try:
+            call: http.post
+            args:
+                url: ${cloud_function_url}
+                query:
+                    method: download_all_saved_reports
+                auth:
+                    type: OIDC
+            result: report_downloaded
+        retry: ${http.default_retry}
+    # This step the report used for alerting purposes
     - download_report:
         try:
             call: http.post
@@ -28,6 +41,7 @@ main:
                     type: OIDC
             result: report_downloaded
         retry: ${http.default_retry}
+    # This step builds the bigquery models and prepares for anomaly detection
     - prepare_bq:
         try:
             call: http.post
@@ -39,6 +53,7 @@ main:
                     type: OIDC
             result: report_downloaded
         retry: ${http.default_retry}
+    # This step detects anomalies and sends emails when detected
     - detect_anomalies:
         try:
             call: http.post
