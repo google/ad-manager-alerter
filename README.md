@@ -8,7 +8,7 @@ This project is meant to serve as inspiration for how you can do anomaly detecti
   - [Setup](#setup)
     - [Create service account](#create-service-account)
     - [Create a Google Cloud Bucket](#create-a-google-cloud-bucket)
-    - [Create a BigQuery dataset](#create-a-bigquery-dataset)
+    - [Create a BigQuery dataset (used for alerting)](#create-a-bigquery-dataset-used-for-alerting)
     - [Grant access to run Ad Manager Reports](#grant-access-to-run-ad-manager-reports)
     - [Deploy to cloud](#deploy-to-cloud)
       - [Making sure we can send emails](#making-sure-we-can-send-emails)
@@ -62,7 +62,9 @@ Save the name of the bucket in `src/config.py`.
 **Important!**
 Make sure you grant access for the service account to read/write to this bucket.
 
-### Create a BigQuery dataset
+### Create a BigQuery dataset (used for alerting)
+
+*If you're not planning to use the alerting features you can skip this step.*
 
 [Create a new BigQuery data set](https://cloud.google.com/bigquery/docs/datasets#console) save the name of the dataset in `src/config.py`.
 
@@ -78,6 +80,8 @@ For this project to work it needs to first fetch reports from the Ad Manager API
 ### Deploy to cloud
 
 #### Making sure we can send emails
+
+*If you're not planning to use the alerting features you can skip this step.*
 
 Making sure emails are sent and received correctly can be tricky, to make it easier this example uses SendGrid in order to send emails.
 
@@ -151,6 +155,13 @@ we've created three modules, [Ad Manager report downloader](report_downloader.py
 ### Ad Manager report downloader
 
 This module is responsible for requesting and downloading Ad Manager reports into Google Cloud Storage.
+
+It has two main entry points "download_report" and "download_all_saved_reports".
+
+* `download_report` is used for the report that will be used for alerting
+  purposes.
+* `download_all_saved_reports` downloads all reports that have been shared with
+  the service account used to run the script.
 
 The authentication method chosen for this project is to generate access tokens directly from the Cloud Function as described here: [Authenticating applications directly with access tokens](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances#applications).
 

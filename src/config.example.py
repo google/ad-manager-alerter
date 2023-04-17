@@ -27,8 +27,9 @@ NETWORK_CODE = "[YOUR_NETWORK_CODE]"
 
 BUCKET = "[YOUR_GCS_BUCKET]" # Example: "bucket_name", don't include gs://
 REPORT_FILE = "report.csv.gz"
+DIMENSIONS_TO_REPORT = ["DATE", "HOUR", "PLACEMENT_NAME"]
 COLUMNS_TO_REPORT = ["AD_SERVER_IMPRESSIONS"]
-DAYS_IN_REPORT = 60
+DAYS_IN_REPORT = 365
 
 
 # Step 2, upload report to bigquery and build model
