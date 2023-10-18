@@ -23,8 +23,7 @@ This project is meant to serve as inspiration for how you can do anomaly detecti
 
 ## Setup
 
-This code repository is prepared to be deployed to run directly on Google Cloud
-What you will need in order to deploy this to Google Cloud:
+This code repository is prepared to be deployed to run directly on Google Cloud.
 
 Products needed:
 
