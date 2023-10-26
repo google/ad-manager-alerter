@@ -37,9 +37,6 @@ DATASET = "[YOUR_DATASET]"
 TABLE = "historical_report"
 ML_MODEL_NAME = "historical_report_model"
 
-COLUMNS_TO_REPORT = ["AD_SERVER_IMPRESSIONS"]
-DAYS_IN_REPORT = 60
-
 COLUMN_TO_MONITOR = "Column_AD_SERVER_IMPRESSIONS"
 
 # Step 3, send alerts
