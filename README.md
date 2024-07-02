@@ -149,7 +149,7 @@ to run the workflow at an interval.
 ## Overview of modules
 
 In order to setup the entire workflow to detect anomalies
-we've created three modules, [Ad Manager report downloader](report_downloader.py), [BigQuery import and Model creation](ml_builder.py) and the [Anomaly Detector and alerter](anomaly_detector.py).
+we've created three modules, [Ad Manager report downloader](src/report_downloader.py), [BigQuery import and Model creation](src/ml_builder.py) and the [Anomaly Detector and alerter](src/anomaly_detector.py).
 
 ### Ad Manager report downloader
 
