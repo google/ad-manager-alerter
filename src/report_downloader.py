@@ -36,7 +36,7 @@ from config import (
     DIMENSIONS_TO_REPORT
 )
 
-API_VERSION="v202302"
+API_VERSION="v202405"
 
 APPLICATION_NAME = "Anomaly detection"
 METADATA_URL = "http://metadata.google.internal/computeMetadata/v1/"
